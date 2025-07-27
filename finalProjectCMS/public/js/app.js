@@ -8,134 +8,11 @@ const modalContentContainer = document.querySelector(".modal");
 const toast = document.querySelector(".toast");
 const toastStatusText = document.querySelector(".toast-content");
 const processBar = document.querySelector('.process-bar')
+const themeBtn = document.querySelector('.theme-button')
+const searchParams = new URLSearchParams(window.location.search);
+const themeIcon = themeBtn.firstElementChild;
 let is_changed;
-
-const cmsData = {
-  users: [
-    {
-      id: 1,
-      name: "Yasin",
-      userName: "yasinUserName",
-      email: "yasinnik2005@gmail.com",
-      password: "yasin1212",
-    },
-    {
-      id: 2,
-      name: "Sara",
-      userName: "sara_dev",
-      email: "sara@gmail.com",
-      password: "saraPass123",
-    },
-    {
-      id: 3,
-      name: "Ali",
-      userName: "aliCode",
-      email: "ali@yahoo.com",
-      password: "aliSecure456",
-    },
-    {
-      id: 4,
-      name: "Niloofar",
-      userName: "nilo_art",
-      email: "niloofar@mail.com",
-      password: "nilo789",
-    },
-    {
-      id: 5,
-      name: "Omid",
-      userName: "omidJS",
-      email: "omid@domain.com",
-      password: "ompass321",
-    },
-    {
-      id: 6,
-      name: "Zahra",
-      userName: "zahra_ui",
-      email: "zahra@site.com",
-      password: "zahraPwd9",
-    },
-    {
-      id: 7,
-      name: "Reza",
-      userName: "reza_front",
-      email: "reza@webdev.ir",
-      password: "re123pass",
-    },
-    {
-      id: 8,
-      name: "Parsa",
-      userName: "parsaCode",
-      email: "parsa@cms.com",
-      password: "passParsa",
-    },
-    {
-      id: 9,
-      name: "Mina",
-      userName: "mina_design",
-      email: "mina@graphic.com",
-      password: "min@745",
-    },
-    {
-      id: 10,
-      name: "Hossein",
-      userName: "hosse_dev",
-      email: "hossein@build.net",
-      password: "hos!321",
-    },
-    {
-      id: 11,
-      name: "Rana",
-      userName: "rana_uiux",
-      email: "rana@design.io",
-      password: "ranaioX",
-    },
-    {
-      id: 12,
-      name: "Hamed",
-      userName: "hamedSys",
-      email: "hamed@admin.com",
-      password: "hamedSecure",
-    },
-    {
-      id: 13,
-      name: "Shirin",
-      userName: "shirinTech",
-      email: "shirin@mail.org",
-      password: "techPass",
-    },
-    {
-      id: 14,
-      name: "Farhad",
-      userName: "farhadJS",
-      email: "farhad@devzone.ir",
-      password: "farDev2025",
-    },
-    {
-      id: 15,
-      name: "Ladan",
-      userName: "ladanUX",
-      email: "ladan@creatives.com",
-      password: "uxLadP@",
-    },
-  ],
-  products: [
-    { id: 1, title: "Car", price: 300, slug: "azera-2008" },
-    { id: 2, title: "Bike", price: 120, slug: "mountain-bike" },
-    { id: 3, title: "Laptop", price: 950, slug: "macbook-pro-16" },
-    { id: 4, title: "Camera", price: 670, slug: "canon-eos-90d" },
-    { id: 5, title: "Coffee Machine", price: 230, slug: "nespresso-touch" },
-    { id: 6, title: "Smartphone", price: 800, slug: "galaxy-s25-ultra" },
-    { id: 7, title: "Watch", price: 140, slug: "casio-vintage" },
-    { id: 8, title: "Backpack", price: 65, slug: "northface-hiker" },
-    { id: 9, title: "Headphones", price: 150, slug: "sony-wh1000xm5" },
-    { id: 10, title: "Desk Lamp", price: 40, slug: "philips-led-style" },
-    { id: 11, title: "Shoes", price: 90, slug: "nike-airmax" },
-    { id: 12, title: "Glasses", price: 120, slug: "rayban-classic" },
-    { id: 13, title: "Gaming Chair", price: 350, slug: "dxracer-elite" },
-    { id: 14, title: "Keyboard", price: 85, slug: "mechanical-rgb" },
-    { id: 15, title: "Book", price: 25, slug: "javascript-mastery" },
-  ],
-};
+let cmsData;
 
 function showNewUsers() {
   newUsersSection.innerHTML = "";
@@ -265,6 +142,7 @@ function submitBtnHandlerDelete(productID) {
   removeProduct(productID);
   closeModal();
   toastHandler("delete");
+  saveToLocalStorage(cmsData)
 }
 
 function openDeleteModal(id) {
@@ -332,6 +210,7 @@ function submitEditBtnHandler(productID) {
   showLastProducts();
   closeModal();
   toastHandler("edit");
+  saveToLocalStorage(cmsData)
 }
 
 function toastHandler(action) {
@@ -371,7 +250,17 @@ function toastHandler(action) {
     processBar.style.width = '0%';
   }, 3000);
 }
-
+function changeThemeHandler(){
+  getThemeFromLocalStorage()
+  if(themeIcon.classList.contains('fa-sun')){
+    themeIcon.classList.replace('fa-sun', 'fa-moon');
+    document.documentElement.classList.add('dark')
+  } else {
+    themeIcon.classList.replace('fa-moon', 'fa-sun');
+    document.documentElement.classList.remove('dark')
+  }
+  saveThemeToLocalStorage()
+}
 
 function updateUserCount(users) {
   userCountElem.textContent = users.length;
@@ -384,14 +273,162 @@ function updateProductCount(products) {
 function closeModal() {
   modalScreen.classList.add("hidden");
 }
+function saveToLocalStorage(data){
+  localStorage.setItem('CMS_DATA' , JSON.stringify(data))
+}
+function saveThemeToLocalStorage(){
+  localStorage.setItem('theme' , JSON.stringify(themeIcon.className))
+}
+function getThemeFromLocalStorage(){
+  const savedTheme = JSON.parse(localStorage.getItem('theme'));
+  if (!savedTheme) return; // nothing stored
 
+  themeIcon.className = savedTheme;
+
+  if (savedTheme.includes('fa-moon')) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+}
+
+function getFromLocalStorage(){
+  cmsData = JSON.parse(localStorage.getItem('CMS_DATA'))||{
+  users: [
+    {
+      id: 1,
+      name: "Yasin",
+      userName: "yasinUserName",
+      email: "yasinnik2005@gmail.com",
+      password: "yasin1212",
+    },
+    {
+      id: 2,
+      name: "Sara",
+      userName: "sara_dev",
+      email: "sara@gmail.com",
+      password: "saraPass123",
+    },
+    {
+      id: 3,
+      name: "Ali",
+      userName: "aliCode",
+      email: "ali@yahoo.com",
+      password: "aliSecure456",
+    },
+    {
+      id: 4,
+      name: "Niloofar",
+      userName: "nilo_art",
+      email: "niloofar@mail.com",
+      password: "nilo789",
+    },
+    {
+      id: 5,
+      name: "Omid",
+      userName: "omidJS",
+      email: "omid@domain.com",
+      password: "ompass321",
+    },
+    {
+      id: 6,
+      name: "Zahra",
+      userName: "zahra_ui",
+      email: "zahra@site.com",
+      password: "zahraPwd9",
+    },
+    {
+      id: 7,
+      name: "Reza",
+      userName: "reza_front",
+      email: "reza@webdev.ir",
+      password: "re123pass",
+    },
+    {
+      id: 8,
+      name: "Parsa",
+      userName: "parsaCode",
+      email: "parsa@cms.com",
+      password: "passParsa",
+    },
+    {
+      id: 9,
+      name: "Mina",
+      userName: "mina_design",
+      email: "mina@graphic.com",
+      password: "min@745",
+    },
+    {
+      id: 10,
+      name: "Hossein",
+      userName: "hosse_dev",
+      email: "hossein@build.net",
+      password: "hos!321",
+    },
+    {
+      id: 11,
+      name: "Rana",
+      userName: "rana_uiux",
+      email: "rana@design.io",
+      password: "ranaioX",
+    },
+    {
+      id: 12,
+      name: "Hamed",
+      userName: "hamedSys",
+      email: "hamed@admin.com",
+      password: "hamedSecure",
+    },
+    {
+      id: 13,
+      name: "Shirin",
+      userName: "shirinTech",
+      email: "shirin@mail.org",
+      password: "techPass",
+    },
+    {
+      id: 14,
+      name: "Farhad",
+      userName: "farhadJS",
+      email: "farhad@devzone.ir",
+      password: "farDev2025",
+    },
+    {
+      id: 15,
+      name: "Ladan",
+      userName: "ladanUX",
+      email: "ladan@creatives.com",
+      password: "uxLadP@",
+    },
+  ],
+  products: [
+    { id: 1, title: "Car", price: 300, slug: "azera-2008" },
+    { id: 2, title: "Bike", price: 120, slug: "mountain-bike" },
+    { id: 3, title: "Laptop", price: 950, slug: "macbook-pro-16" },
+    { id: 4, title: "Camera", price: 670, slug: "canon-eos-90d" },
+    { id: 5, title: "Coffee Machine", price: 230, slug: "nespresso-touch" },
+    { id: 6, title: "Smartphone", price: 800, slug: "galaxy-s25-ultra" },
+    { id: 7, title: "Watch", price: 140, slug: "casio-vintage" },
+    { id: 8, title: "Backpack", price: 65, slug: "northface-hiker" },
+    { id: 9, title: "Headphones", price: 150, slug: "sony-wh1000xm5" },
+    { id: 10, title: "Desk Lamp", price: 40, slug: "philips-led-style" },
+    { id: 11, title: "Shoes", price: 90, slug: "nike-airmax" },
+    { id: 12, title: "Glasses", price: 120, slug: "rayban-classic" },
+    { id: 13, title: "Gaming Chair", price: 350, slug: "dxracer-elite" },
+    { id: 14, title: "Keyboard", price: 85, slug: "mechanical-rgb" },
+    { id: 15, title: "Book", price: 25, slug: "javascript-mastery" },
+  ],
+};
+}
 function loadContent() {
+  getFromLocalStorage()
+  getThemeFromLocalStorage()
   updateUserCount(cmsData.users);
   updateProductCount(cmsData.products);
   showNewUsers();
   showLastProducts();
 }
-
+themeBtn.addEventListener('click' , changeThemeHandler)
 window.addEventListener("DOMContentLoaded", loadContent);
 toggleSidebarBtn.addEventListener("click", () => {
   document.querySelector(".sidebar").classList.toggle("open");
@@ -403,5 +440,6 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-window.showAllProducts = showAllProducts;
-window.showLastProducts = showLastProducts;
+
+// window.showAllProducts = showAllProducts;
+// window.showLastProducts = showLastProducts;
