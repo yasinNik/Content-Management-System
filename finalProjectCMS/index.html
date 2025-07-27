@@ -1,0 +1,161 @@
+<!-- 
+  1: use ".hidden" class to toggle ".TOAST" and ".MODAL-SCREEN"
+
+  2: use insertAdjacentHTML method to change .modal content
+-->
+
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>سبزلرن - داشبورد ادمین</title>
+    <link rel="stylesheet" href="./public/css/styles.css" />
+    <!-- Fontawesome CDNJS 6.6.0 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+  </head>
+  <body onload="loadContent()">
+    <header></header>
+
+    <main>
+      <aside class="sidebar">
+        <header>
+          <a href="/">
+            <img src="./public/images/logo.png" class="website-logo" alt="" />
+          </a>
+        </header>
+        <main class="side-menu">
+          <ul class="side-container">
+            <li>
+              <a href="#" class="navlink active">
+                <span class="navicon"><i class="fa-solid fa-house"></i></span>
+                <span class="title">داشبورد</span>
+              </a>
+            </li>
+            <!-- Products -->
+            <li>
+              <a href="./dashboard/products/" class="navlink">
+                <span class="navicon"><i class="fa-solid fa-box"></i></span>
+                <span class="title">محصولات</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./dashboard/users/" class="navlink">
+                <span class="navicon"><i class="fa-solid fa-users"></i></span>
+                <span class="title">کاربران</span>
+              </a>
+            </li>
+          </ul>
+        </main>
+        <footer></footer>
+        <button class="toggle-sidebar">
+          <!-- Arrow Right -->
+          <i class="fa-solid fa-angle-left"></i>
+        </button>
+      </aside>
+      <section class="content">
+        <div class="breadcrumbs">
+          <a href="./index.html" class="breadcrumb">داشبورد</a>
+        </div>
+
+        <section class="hero-cards">
+          <article>
+            <i class="ui-border emerald top"></i>
+            <i class="ui-border emerald bottom"></i>
+            <!-- Products icon -->
+            <span class="hero-card-icon products-icon">
+              <i class="fa-solid fa-box"></i>
+            </span>
+            <div>
+              <p class="hero-card-title">محصولات</p>
+              <p class="hero-card-data products-data">2</p>
+            </div>
+          </article>
+          <article>
+            <i class="ui-border indigo top"></i>
+            <i class="ui-border indigo bottom"></i>
+            <!-- Users icon -->
+            <span class="hero-card-icon users-icon">
+              <i class="fa-solid fa-users"></i>
+            </span>
+            <div>
+              <p class="hero-card-title">کاربران</p>
+              <p class="hero-card-data users-data">2</p>
+            </div>
+          </article>
+          <article>
+            <i class="ui-border red top"></i>
+            <i class="ui-border red bottom"></i>
+            <!-- Admins icon -->
+            <span class="hero-card-icon admins-icon">
+              <i class="fa-solid fa-user-tie"></i>
+            </span>
+            <div>
+              <p class="hero-card-title">مدیران</p>
+              <p class="hero-card-data moderators-data">2</p>
+            </div>
+          </article>
+          <article>
+            <i class="ui-border yellow top"></i>
+            <i class="ui-border yellow bottom"></i>
+            <!-- Tickets icon -->
+            <span class="hero-card-icon tickets-icon">
+              <i class="fa-solid fa-ticket"></i>
+            </span>
+            <div>
+              <p class="hero-card-title">تیکت‌ها</p>
+              <p class="hero-card-data ticket-data">2</p>
+            </div>
+          </article>
+        </section>
+
+        <section class="after-hero">
+          <section class="latest-users">
+            <!-- added from js  -->
+          </section>
+          <section class="table-component">
+              <!-- added from js  -->
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <footer></footer>
+
+    <div class="toast failed hidden">
+      <i class="ui-border top-0"></i>
+      <span class="icon-card">
+        <span class="icon"></span>
+      </span>
+      <span class="toast-content"></span>
+
+      <div class="process-bar">
+        <div class="process"></div>
+      </div>
+    </div>
+
+    <div class="modal-screen hidden">
+      <div class="modal">
+        <!-- added from js ,  Modal Edit Product , Modal Delete Product -->
+      </div>
+    </div>
+
+    <button class="theme-button">
+      <!-- Moon icon -->
+      <!-- <i class="fas fa-moon"></i> -->
+      <!-- Sun icon -->
+      <i class="fas fa-sun"></i>
+    </button>
+
+    <footer class="copyright">
+      &copy; توسعه داده شده با 💚 در
+      <a href="https://sabzlearn.ir" target="_blank">سبزلرن</a>
+    </footer>
+
+    <script src="./public/js//app.js"></script>
+  </body>
+</html>
